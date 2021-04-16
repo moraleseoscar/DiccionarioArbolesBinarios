@@ -1,97 +1,80 @@
-public class BinaryTree<E>
-{
+/**
+ * @author Oscar Estrada 20565
+ *
+ */
+public class BinaryTree {
 
-    protected E val; // value associated with node
-	protected BinaryTree<E> parent; // parent of node
-	protected BinaryTree<E> left, right; // children of node
-	
-	public BinaryTree()
-	// post: constructor that generates an empty node
-	{
-		val = null;
-		parent = null; left = right = this;
-	}
-	
-	public BinaryTree(E value)
-	// post: returns a tree referencing value and two empty subtrees
-	{
-		val = value;
-		right = left = new BinaryTree<E>();
-		setLeft(left);
-		setRight(right);
-	}
-	
-	public BinaryTree(E value, BinaryTree<E> left, BinaryTree<E> right)
-	// post: returns a tree referencing value and two subtrees
-	{
-		val = value;
-		if (left == null) { left = new BinaryTree<E>(); }
-		setLeft(left);
-		if (right == null) { right = new BinaryTree<E>(); }
-		setRight(right);
-	}
-	
-	public BinaryTree<E> left()
-	// post: returns reference to (possibly empty) left subtree
-	// post: returns reference to (possibly empty) left subtree
-	{
-		return left;
-	}
-	
-	public BinaryTree<E> right()
-	// post: returns reference to (possibly empty) right subtree
-	// post: returns reference to (possibly empty) right subtree
-	{
-		return right;
-	}
-	
-	public BinaryTree<E> parent() {
-		return parent;
-	}
-	// post: returns reference to parent node, or null
-	
-	public void setLeft(BinaryTree<E> newLeft)
-	// post: sets left subtree to newLeft
-	// re-parents newLeft if not null
-	{
-		if (isEmpty()) return;
-		if (left != null && left.parent() == this) left.setParent(null);
-		left = newLeft;
-		left.setParent(this);
-	}
-	
-	public void setRight(BinaryTree<E> newRight)
-	// post: sets left subtree to newLeft
-	// re-parents newLeft if not null
-	{
-		if (isEmpty()) return;
-		if (right != null && right.parent() == this) right.setParent(null);
-		right = newRight;
-		right.setParent(this);
-	}
-	
-	protected void setParent(BinaryTree<E> newParent)
-	// post: re-parents this node to parent reference, or null
-	{
-		if (!isEmpty()) {
-		parent = newParent;
-		}
-	}
-	
-	public boolean isEmpty() {
-		return val == null;
-	}
+    Nodo root;//Para ubicar la raiz
+    //word es el key y trans la traduccion
 
-	public E value()
-	// post: returns value associated with this node
-	{
-		return val;
-	}
-	
-	public void setValue(E value)
-	// post: sets the value associated with this node
-	{
-		val = value;
-	}
-	
+    /**
+     *
+     * @param word la palabra para agregar
+     * @param trans la traduccion de esa palabra
+     */
+    public void addNodo(String word, Traduccion tr){
+        Nodo newNodo = new Nodo(word, tr);
+
+        if(root == null){
+            root = newNodo;//si esta vacio se crea denomina root a la primera palabra
+        }
+        else{
+            Nodo auxiliar = root;
+            Nodo padre;
+            while (true){
+                padre = auxiliar;
+                int compare = word.compareTo(auxiliar.principal);
+                if(compare < 0){									//CompareTo puede devolver 3 valores:
+                	auxiliar = auxiliar.left;						// 							-1 si va antes alfabeticamente (Van a la izquierda del arbol)
+                    if(auxiliar == null){							// 							1 si va despues alfabeticamente (Van derecha del arbol)
+                        padre.left = newNodo;						// 							0 si es igual (Van derecha del arbol)
+                        return;
+                    }
+                }
+                else{
+                	auxiliar = auxiliar.right;
+                    if(auxiliar == null){
+                        padre.right = newNodo;
+                        return;
+                    }
+                }
+            }
+        }
+    }
+    /**
+     *
+     * @param focusNodo se ingresa el nodo raiz del arbol
+     *                  Imprime las palabras en orden alfabetico
+     */
+    public void inOrder(Nodo auxiliar){
+        if(auxiliar != null){
+            inOrder(auxiliar.left);
+            System.out.println(auxiliar);
+            inOrder(auxiliar.right);
+        }
+    }
+
+    /**
+     *
+     * @param word la palabra que estamos buscando
+     * @return la traduccion de esa palabra
+     */
+    public Traduccion findNodo(String word){
+        Nodo focusNodo = root;
+
+        while(!focusNodo.principal.equals(word)){
+            int compare = word.compareTo(focusNodo.principal);
+            if(compare < 0){
+                focusNodo = focusNodo.left;
+            }
+            else{
+                focusNodo = focusNodo.right;
+            }
+            if(focusNodo == null){
+                return null;
+            }
+        }
+        return focusNodo.getValue();
+    }
+
 }
