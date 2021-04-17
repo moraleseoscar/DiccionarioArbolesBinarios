@@ -1,22 +1,27 @@
 /**
  * @author Oscar Estrada 20565
- *
+ * Codigo basado en video de Derek Banas: https://www.youtube.com/watch?v=M6lYob8STMI&t=10s
+ * Codigo basado tambien en https://www.daniweb.com/programming/software-development/threads/450817/binary-tree-using-strings-and-recursion
  */
 public class BinaryTree {
 
-    Nodo root;//Para ubicar la raiz
-    //word es el key y trans la traduccion
+    Nodo root;
+
+    //Constructor
+    public BinaryTree() {
+    	root = null;
+    }
 
     /**
      *
      * @param word la palabra para agregar
-     * @param trans la traduccion de esa palabra
+     * @param tr es el objeto con las traducciones de dicha palabra
      */
     public void addNodo(String word, Traduccion tr){
         Nodo newNodo = new Nodo(word, tr);
 
         if(root == null){
-            root = newNodo;//si esta vacio se crea denomina root a la primera palabra
+            root = newNodo;
         }
         else{
             Nodo auxiliar = root;
@@ -43,8 +48,9 @@ public class BinaryTree {
     }
     /**
      *
-     * @param focusNodo se ingresa el nodo raiz del arbol
-     *                  Imprime las palabras en orden alfabetico
+     * @param auxiliar que es el nodo del arbol a leer
+     * Devuelve los datos en orden alfabetico por la lectura inOrder.
+     *                  
      */
     public void inOrder(Nodo auxiliar){
         if(auxiliar != null){
@@ -56,25 +62,40 @@ public class BinaryTree {
 
     /**
      *
-     * @param word la palabra que estamos buscando
-     * @return la traduccion de esa palabra
+     * @param word La palabra que se busca su traduccion.
+     * @param to Es al lenguaje que se desea traducir.
+     * @return La palabra traducida al lenguaje que se pide.
      */
-    public Traduccion findNodo(String word){
-        Nodo focusNodo = root;
+    public String findNodo(String word, int to){
+        String traducida = "";
+    	Nodo auxiliar = root;
 
-        while(!focusNodo.principal.equals(word)){
-            int compare = word.compareTo(focusNodo.principal);
+        while(!auxiliar.principal.equals(word)){
+            int compare = word.compareTo(auxiliar.principal);
             if(compare < 0){
-                focusNodo = focusNodo.left;
+            	auxiliar = auxiliar.left;
             }
             else{
-                focusNodo = focusNodo.right;
+            	auxiliar = auxiliar.right;
             }
-            if(focusNodo == null){
+            if(auxiliar == null){										
                 return null;
             }
         }
-        return focusNodo.getValue();
+        
+        switch(to) {
+		case 2:
+			traducida = auxiliar.traduccion.getSpanish();
+			break;
+		case 1:
+			traducida = auxiliar.traduccion.getEnglish();
+			break;
+		case 3:
+			traducida = auxiliar.traduccion.getFrench();
+			break;
+		} 
+        
+        return traducida;
     }
 
 }

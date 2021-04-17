@@ -1,7 +1,7 @@
 import java.util.HashMap;
 
 /**
- * @author ASUS
+ * @author Oscar Estrada 20565
  *
  */
 public class Nodo {
@@ -9,19 +9,24 @@ public class Nodo {
     protected Traduccion traduccion;
 	protected Nodo left, right; // children of node
 	
+	//Constructor
 	public Nodo (String principal, Traduccion tr) {
 		this.principal = principal;
 		this.traduccion = tr;
 		this.left = this.right = null;
 	}
 	
+	/**
+	 * @return traduccion
+	 *
+	 */
 	public Traduccion getValue(){
 	    return traduccion;
 	}
 
 	@Override
 	public String toString() {
-		return "Nodo [Palabra=" + principal + ", traducciones=" + traduccion.getEnglish() + " " + traduccion.getSpanish() + " " + traduccion.getFrench();
+		return "Palabra=" + principal + ", Traducciones= " + traduccion.getEnglish() + " - " + traduccion.getSpanish() + " - " + traduccion.getFrench();
 	}
 
 }
